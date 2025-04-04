@@ -8,28 +8,30 @@
   <body>
 
     <script>
-// Dynamically load Leaflet CSS
+// Load Leaflet CSS
 const leafletCSS = document.createElement('link');
 leafletCSS.rel = 'stylesheet';
 leafletCSS.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
 document.head.appendChild(leafletCSS);
 
 // Create map container
-const mapContainer = document.createElement('div');
-mapContainer.id = 'japanMap';
-mapContainer.style.height = '600px';
-mapContainer.style.margin = '20px 0';
-document.body.appendChild(mapContainer);
+const mapDiv = document.createElement('div');
+mapDiv.id = 'japanMap';
+mapDiv.style.height = '600px';
+mapDiv.style.margin = '20px 0';
+mapDiv.style.borderRadius = '10px';
+document.body.appendChild(mapDiv);
 
 // Load Leaflet JS
 const script = document.createElement('script');
 script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
 script.onload = () => {
+    // Initialize map with English labels
     const map = L.map('japanMap').setView([36.2048, 138.2529], 6);
-    
-    // Use OSM tiles with English labels
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+
+    // Use Wikimedia tiles with Latin script labels
+    L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>',
         maxZoom: 18,
     }).addTo(map);
 
@@ -42,11 +44,11 @@ script.onload = () => {
         {name: 'Okinawa', coords: [26.2124, 127.6809]}
     ];
 
-    // Add markers with Romanized labels
-    locations.forEach(location => {
-        L.marker(location.coords)
+    // Add markers
+    locations.forEach(loc => {
+        L.marker(loc.coords)
          .addTo(map)
-         .bindPopup(`<b>${location.name}</b>`);
+         .bindPopup(`<b>${loc.name}</b>`);
     });
 };
 document.head.appendChild(script);

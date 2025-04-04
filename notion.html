@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Titel</title>
+  </head>
+  <body>
+
+    <script>
+// Dynamically load Leaflet CSS
+const leafletCSS = document.createElement('link');
+leafletCSS.rel = 'stylesheet';
+leafletCSS.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+document.head.appendChild(leafletCSS);
+
+// Create map container
+const mapContainer = document.createElement('div');
+mapContainer.id = 'japanMap';
+mapContainer.style.height = '600px';
+mapContainer.style.margin = '20px 0';
+document.body.appendChild(mapContainer);
+
+// Load Leaflet JS
+const script = document.createElement('script');
+script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+script.onload = () => {
+    const map = L.map('japanMap').setView([36.2048, 138.2529], 6);
+    
+    // Use OSM tiles with English labels
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 18,
+    }).addTo(map);
+
+    // Locations with Romanized names
+    const locations = [
+        {name: 'Tokyo', coords: [35.6804, 139.7690]},
+        {name: 'Mount Fuji', coords: [35.3606, 138.7278]},
+        {name: 'Osaka', coords: [34.6937, 135.5023]},
+        {name: 'Kyoto', coords: [35.0116, 135.7681]},
+        {name: 'Okinawa', coords: [26.2124, 127.6809]}
+    ];
+
+    // Add markers with Romanized labels
+    locations.forEach(location => {
+        L.marker(location.coords)
+         .addTo(map)
+         .bindPopup(`<b>${location.name}</b>`);
+    });
+};
+document.head.appendChild(script);
+</script>
+
+
+  </body>
+</html>
